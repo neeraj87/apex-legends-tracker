@@ -11,6 +11,14 @@ if(process.env.NODE_ENV === 'development') {
 
 app.use('/api/v1/profile', require('./routes/profile'));
 
+//handle production
+if(process.env.NODE_ENV === 'production') {
+    //set public folder
+    app.use(express.static(__dirname + '/public/'));
+
+    //handle spa
+    app.get(/.*/, (req, res) => res.sendFile(__dirname + '/public/index.html'));
+}
 const port = process.env.PORT || 5000;
 
 app.listen(port, () => {
